@@ -1,3 +1,9 @@
+import AppLayout from '@/components/layout/AppLayout';
+import PrefectureSelector from '@/components/prefecture/PrefectureSelector';
 export default function Home() {
-    return <div>Home</div>;
+    return (
+        <AppLayout>
+            <PrefectureSelector />
+        </AppLayout>
+    );
 }
