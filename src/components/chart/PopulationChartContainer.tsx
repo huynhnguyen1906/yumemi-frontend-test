@@ -27,7 +27,9 @@ export default function PopulationChartContainer({ prefectures }: Props) {
             try {
                 const promises = prefectures.map(async (prefecture) => {
                     const result = await getPopulation(prefecture.prefCode);
-                    const composition = result.data.find((comp: PopulationComposition) => comp.label === selectedLabel);
+                    const composition = result.result.data.find(
+                        (comp: PopulationComposition) => comp.label === selectedLabel,
+                    );
                     return {
                         prefCode: prefecture.prefCode,
                         prefName: prefecture.prefName,

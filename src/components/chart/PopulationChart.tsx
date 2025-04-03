@@ -66,9 +66,9 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
             },
         },
         legend: {
-            align: 'right',
+            align: 'center',
             verticalAlign: 'bottom',
-            layout: 'vertical',
+            layout: 'horizontal',
             itemMarginTop: 5,
             itemMarginBottom: 5,
         },
