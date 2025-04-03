@@ -7,8 +7,8 @@ import PrefectureCheckbox from './PrefectureCheckbox';
 import styles from '@styles/components/PrefectureSelector.module.scss';
 
 type Props = {
-    selected: number[];
-    onChange: (selected: number[]) => void;
+    selected: Prefecture[];
+    onChange: (selected: Prefecture[]) => void;
 };
 
 export default function PrefectureSelector({ selected, onChange }: Props) {
@@ -28,7 +28,10 @@ export default function PrefectureSelector({ selected, onChange }: Props) {
     }, []);
 
     const handleChange = (prefCode: number, checked: boolean) => {
-        onChange(checked ? [...selected, prefCode] : selected.filter((code) => code !== prefCode));
+        const prefecture = prefectures.find((p) => p.prefCode === prefCode);
+        if (!prefecture) return;
+
+        onChange(checked ? [...selected, prefecture] : selected.filter((p) => p.prefCode !== prefCode));
     };
 
     return (
@@ -40,7 +43,7 @@ export default function PrefectureSelector({ selected, onChange }: Props) {
                         key={pref.prefCode}
                         prefCode={pref.prefCode}
                         prefName={pref.prefName}
-                        checked={selected.includes(pref.prefCode)}
+                        checked={selected.some((p) => p.prefCode === pref.prefCode)}
                         onChange={handleChange}
                     />
                 ))}
