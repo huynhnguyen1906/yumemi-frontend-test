@@ -6,9 +6,13 @@ import { getPrefectures } from '@/apis/getPrefectures';
 import PrefectureCheckbox from './PrefectureCheckbox';
 import styles from '@styles/components/PrefectureSelector.module.scss';
 
-export default function PrefectureSelector() {
+type Props = {
+    selected: number[];
+    onChange: (selected: number[]) => void;
+};
+
+export default function PrefectureSelector({ selected, onChange }: Props) {
     const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-    const [selected, setSelected] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchPref = async () => {
@@ -24,7 +28,7 @@ export default function PrefectureSelector() {
     }, []);
 
     const handleChange = (prefCode: number, checked: boolean) => {
-        setSelected((prev) => (checked ? [...prev, prefCode] : prev.filter((code) => code !== prefCode)));
+        onChange(checked ? [...selected, prefCode] : selected.filter((code) => code !== prefCode));
     };
 
     return (
