@@ -98,7 +98,7 @@ npm install
 2. 以下の内容を追加:
 
 ```
-NEXT_PUBLIC_API_KEY=<RESAS APIキー>
+NEXT_PUBLIC_API_KEY=<APIキー>
 ```
 
 ### 開発サーバーの起動
