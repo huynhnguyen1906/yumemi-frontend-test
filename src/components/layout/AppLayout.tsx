@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import PrefectureSelector from '../prefecture/PrefectureSelector';
+import { Prefecture } from '@/apis/types';
+import PrefectureSelector from '@/components/prefecture/PrefectureSelector';
+import PopulationChartContainer from '@/components/chart/PopulationChartContainer';
 import styles from '@styles/components/AppLayout.module.scss';
 
 export default function AppLayout() {
-    const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
+    const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
 
     return (
         <div className={styles.wrapper}>
@@ -14,7 +16,7 @@ export default function AppLayout() {
             </header>
             <main className={styles.main}>
                 <PrefectureSelector selected={selectedPrefectures} onChange={setSelectedPrefectures} />
-                {/* 🔜 今後ここにチャートを追加予定 */}
+                {selectedPrefectures.length > 0 && <PopulationChartContainer prefectures={selectedPrefectures} />}
             </main>
         </div>
     );
