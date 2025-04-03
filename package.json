@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "next": "15.2.4",
+        "normalize.css": "^8.0.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
@@ -24,6 +25,7 @@
         "eslint-config-next": "15.2.4",
         "eslint-config-prettier": "^10.1.1",
         "prettier": "^3.5.3",
+        "sass": "^1.86.2",
         "typescript": "^5"
     }
 }
