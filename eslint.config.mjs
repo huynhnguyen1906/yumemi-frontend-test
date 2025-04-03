@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
+import prettier from 'eslint-plugin-prettier';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,7 +16,9 @@ const eslintConfig = [
 
     {
         files: ['**/*.{js,ts,jsx,tsx}'],
-        plugins: ['prettier'],
+        plugins: {
+            prettier,
+        },
         rules: {
             'prettier/prettier': 'warn', // またはCIを失敗させたい場合は'error'
         },
