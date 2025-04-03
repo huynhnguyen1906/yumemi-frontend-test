@@ -3,6 +3,7 @@
 import { Prefecture } from '@/apis/types';
 import { usePrefectures } from '@/hooks/usePrefectures';
 import PrefectureCheckbox from './PrefectureCheckbox';
+import Loading from '../common/Loading';
 import styles from '@styles/components/PrefectureSelector.module.scss';
 
 type Props = {
@@ -23,7 +24,7 @@ export default function PrefectureSelector({ selected, onChange }: Props) {
     return (
         <section className={styles.selector}>
             <h2 className={styles.title}>都道府県を選択</h2>
-            {loading && <p className={styles.message}>読み込み中...</p>}
+            {loading && <Loading />}
             {error && <p className={styles.error}>{error}</p>}
             <div className={styles.list}>
                 {prefectures.map((pref) => (
