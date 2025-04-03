@@ -1,11 +1,26 @@
 'use client';
 
-import { useState } from 'react';
-import PrefectureSelector from '../prefecture/PrefectureSelector';
+import { useEffect, useState, useRef } from 'react';
+import { Prefecture } from '@/apis/types';
+import PrefectureSelector from '@/components/prefecture/PrefectureSelector';
+import PopulationChartContainer from '@/components/chart/PopulationChartContainer';
+import { usePrefectures } from '@/hooks/usePrefectures';
 import styles from '@styles/components/AppLayout.module.scss';
 
 export default function AppLayout() {
-    const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
+    const { prefectures, loading } = usePrefectures();
+    const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
+
+    // 初期選択：東京 (13) と大阪 (27)
+    const didInit = useRef(false);
+
+    useEffect(() => {
+        if (!loading && prefectures.length > 0 && !didInit.current) {
+            didInit.current = true;
+            const defaultPrefectures = prefectures.filter((p) => p.prefCode === 13 || p.prefCode === 27);
+            setSelectedPrefectures(defaultPrefectures);
+        }
+    }, [loading, prefectures]);
 
     return (
         <div className={styles.wrapper}>
@@ -14,7 +29,7 @@ export default function AppLayout() {
             </header>
             <main className={styles.main}>
                 <PrefectureSelector selected={selectedPrefectures} onChange={setSelectedPrefectures} />
-                {/* 🔜 今後ここにチャートを追加予定 */}
+                {selectedPrefectures.length > 0 && <PopulationChartContainer prefectures={selectedPrefectures} />}
             </main>
         </div>
     );

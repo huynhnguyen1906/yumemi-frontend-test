@@ -1,56 +1,62 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import PrefectureSelector from '@/components/prefecture/PrefectureSelector';
-import { getPrefectures } from '@/apis/getPrefectures';
+import { Prefecture } from '@/apis/types';
 
-jest.mock('@/apis/getPrefectures');
+jest.mock('@/hooks/usePrefectures', () => ({
+    usePrefectures: () => ({
+        prefectures: [
+            { prefCode: 1, prefName: '北海道' },
+            { prefCode: 2, prefName: '青森県' },
+        ],
+        loading: false,
+        error: null,
+    }),
+}));
 
 describe('PrefectureSelector', () => {
-    const mockData = [
+    const mockData: Prefecture[] = [
         { prefCode: 1, prefName: '北海道' },
         { prefCode: 2, prefName: '青森県' },
     ];
 
-    beforeEach(() => {
-        (getPrefectures as jest.Mock).mockResolvedValue(mockData);
+    // チェックボックスの初期状態が正しく設定されること
+    it('props.selected に応じてチェックが反映される', () => {
+        render(<PrefectureSelector selected={[mockData[0]]} onChange={() => {}} />);
+
+        const checkbox = screen.getByLabelText('北海道') as HTMLInputElement;
+        expect(checkbox.checked).toBe(true);
     });
 
-    // APIのモックをリセット
-    it('都道府県一覧を取得して表示できる', async () => {
-        render(<PrefectureSelector selected={[]} onChange={() => {}} />);
-
-        await waitFor(() => {
-            expect(screen.getByLabelText('北海道')).toBeInTheDocument();
-            expect(screen.getByLabelText('青森県')).toBeInTheDocument();
-        });
-    });
-
-    // APIのモックが失敗した場合のテスト
-    it('チェック状態が props.selected に応じて反映される', async () => {
-        render(<PrefectureSelector selected={[1]} onChange={() => {}} />);
-
-        const checkbox = await screen.findByLabelText('北海道');
-        expect((checkbox as HTMLInputElement).checked).toBe(true);
-    });
-
-    // チェックボックスの状態が props.selected に応じて反映されるか
-    it('チェック時に onChange が呼び出される', async () => {
+    // チェックボックスをクリックした際にonChangeが呼ばれること
+    it('チェック時に onChange が呼ばれる', () => {
         const mockOnChange = jest.fn();
         render(<PrefectureSelector selected={[]} onChange={mockOnChange} />);
 
-        const checkbox = await screen.findByLabelText('北海道');
+        const checkbox = screen.getByLabelText('北海道');
         fireEvent.click(checkbox);
 
-        expect(mockOnChange).toHaveBeenCalledWith([1]);
+        expect(mockOnChange).toHaveBeenCalledWith([mockData[0]]);
     });
 
-    // チェックボックスの状態が props.selected に応じて反映されるか
-    it('チェック解除時に onChange が呼び出される', async () => {
+    // チェックを外した際にonChangeが呼ばれること
+    it('チェック解除時に onChange が呼ばれる', () => {
         const mockOnChange = jest.fn();
-        render(<PrefectureSelector selected={[1]} onChange={mockOnChange} />);
+        render(<PrefectureSelector selected={[mockData[0]]} onChange={mockOnChange} />);
 
-        const checkbox = await screen.findByLabelText('北海道');
+        const checkbox = screen.getByLabelText('北海道');
         fireEvent.click(checkbox);
 
-        expect(mockOnChange).toHaveBeenCalledWith([]); // チェック外したとき
+        expect(mockOnChange).toHaveBeenCalledWith([]);
+    });
+
+    // 全選択解除ボタンをクリックした際にonChangeが呼ばれること
+    it('全ての選択を解除ボタンで onChange([]) が呼ばれる', () => {
+        const mockOnChange = jest.fn();
+        render(<PrefectureSelector selected={[{ prefCode: 1, prefName: '北海道' }]} onChange={mockOnChange} />);
+
+        const button = screen.getByTestId('unselect-all-button');
+        fireEvent.click(button);
+
+        expect(mockOnChange).toHaveBeenCalledWith([]);
     });
 });

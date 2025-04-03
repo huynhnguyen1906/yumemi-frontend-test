@@ -1,15 +1,17 @@
+@use '../variables';
+
 .checkbox {
+    width: 9.2rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.95rem;
-    padding: 0.3rem 0.5rem;
-    background: #fff;
+    font-size: 1.4rem;
+    padding: 0.5rem;
+    background: variables.$background-color;
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
     user-select: none;
-
     input {
         cursor: pointer;
     }
