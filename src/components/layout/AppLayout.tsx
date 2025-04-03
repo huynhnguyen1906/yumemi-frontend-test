@@ -8,7 +8,7 @@ import { usePrefectures } from '@/hooks/usePrefectures';
 import styles from '@styles/components/AppLayout.module.scss';
 
 export default function AppLayout() {
-    const { prefectures, loading, error } = usePrefectures();
+    const { prefectures, loading } = usePrefectures();
     const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
 
     // 初期選択：東京 (13) と大阪 (27)
