@@ -1,18 +1,38 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     min-height: 100vh;
+    width: 100%;
 }
 
 .header {
-    padding: 10px 20px;
-    font-size: 15px;
+    width: 100%;
+    height: 6rem;
     background-color: #f5f5f5;
     border-bottom: 1px solid #ddd;
-    text-align: center;
+    h1 {
+        text-align: center;
+        font-size: 3.2rem;
+        line-height: 6rem;
+    }
 }
 
 .main {
+    display: flex;
+    justify-content: flex-start;
     flex: 1;
-    padding: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .header {
+        h1 {
+            font-size: 2.4rem;
+        }
+    }
 }

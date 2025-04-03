@@ -30,6 +30,9 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
     const options: Highcharts.Options = {
         title: {
             text: `${label}の推移`,
+            style: {
+                fontSize: '16px',
+            },
         },
         credits: {
             enabled: false,
@@ -37,12 +40,20 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
         xAxis: {
             title: { text: '年度' },
             categories: dataMap.size > 0 ? Array.from(dataMap.values())[0].map((point) => point.year.toString()) : [],
+            labels: {
+                style: {
+                    fontSize: '14px',
+                },
+            },
         },
         yAxis: {
             title: { text: '人口数' },
             labels: {
                 formatter: function () {
                     return Highcharts.numberFormat(Number(this.value), 0, '', ',');
+                },
+                style: {
+                    fontSize: '14px',
                 },
             },
         },
@@ -55,6 +66,9 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
                     '',
                     ',',
                 )}人</b>`;
+            },
+            style: {
+                fontSize: '14px',
             },
         },
         plotOptions: {
@@ -69,9 +83,52 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
             layout: 'horizontal',
             itemMarginTop: 5,
             itemMarginBottom: 5,
+            itemStyle: {
+                fontSize: '14px',
+            },
         },
         accessibility: {
             enabled: false,
+        },
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 768,
+                    },
+                    chartOptions: {
+                        title: {
+                            style: {
+                                fontSize: '13px',
+                            },
+                        },
+                        xAxis: {
+                            labels: {
+                                style: {
+                                    fontSize: '11px',
+                                },
+                            },
+                        },
+                        yAxis: {
+                            labels: {
+                                style: {
+                                    fontSize: '11px',
+                                },
+                            },
+                        },
+                        legend: {
+                            itemStyle: {
+                                fontSize: '11px',
+                            },
+                        },
+                        tooltip: {
+                            style: {
+                                fontSize: '11px',
+                            },
+                        },
+                    },
+                },
+            ],
         },
     };
 
