@@ -70,6 +70,9 @@ export default function PopulationChart({ dataMap, prefNames, label }: Props) {
             itemMarginTop: 5,
             itemMarginBottom: 5,
         },
+        accessibility: {
+            enabled: false,
+        },
     };
 
     return (
