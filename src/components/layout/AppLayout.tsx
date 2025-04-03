@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Prefecture } from '@/apis/types';
 import PrefectureSelector from '@/components/prefecture/PrefectureSelector';
 import PopulationChartContainer from '@/components/chart/PopulationChartContainer';
@@ -12,8 +12,11 @@ export default function AppLayout() {
     const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
 
     // 初期選択：東京 (13) と大阪 (27)
+    const didInit = useRef(false);
+
     useEffect(() => {
-        if (!loading && prefectures.length > 0 && selectedPrefectures.length === 0) {
+        if (!loading && prefectures.length > 0 && !didInit.current) {
+            didInit.current = true;
             const defaultPrefectures = prefectures.filter((p) => p.prefCode === 13 || p.prefCode === 27);
             setSelectedPrefectures(defaultPrefectures);
         }
