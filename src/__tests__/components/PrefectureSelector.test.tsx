@@ -14,31 +14,43 @@ describe('PrefectureSelector', () => {
         (getPrefectures as jest.Mock).mockResolvedValue(mockData);
     });
 
-    // テストの実行前にモックをリセット
+    // APIのモックをリセット
     it('都道府県一覧を取得して表示できる', async () => {
-        render(<PrefectureSelector />);
+        render(<PrefectureSelector selected={[]} onChange={() => {}} />);
 
-        // API呼び出しを待つ
         await waitFor(() => {
-            expect(screen.getByText('北海道')).toBeInTheDocument();
-            expect(screen.getByText('青森県')).toBeInTheDocument();
+            expect(screen.getByLabelText('北海道')).toBeInTheDocument();
+            expect(screen.getByLabelText('青森県')).toBeInTheDocument();
         });
     });
 
-    // チェックボックスの初期状態を確認
-    it('チェックボックスをクリックすると選択状態が更新される', async () => {
-        render(<PrefectureSelector />);
+    // APIのモックが失敗した場合のテスト
+    it('チェック状態が props.selected に応じて反映される', async () => {
+        render(<PrefectureSelector selected={[1]} onChange={() => {}} />);
 
-        // チェックボックスの取得
-        const checkbox = await screen.findByLabelText('北海道'); // <label>から取得
+        const checkbox = await screen.findByLabelText('北海道');
+        expect((checkbox as HTMLInputElement).checked).toBe(true);
+    });
 
-        // 初期はunchecked
-        expect((checkbox as HTMLInputElement).checked).toBe(false);
+    // チェックボックスの状態が props.selected に応じて反映されるか
+    it('チェック時に onChange が呼び出される', async () => {
+        const mockOnChange = jest.fn();
+        render(<PrefectureSelector selected={[]} onChange={mockOnChange} />);
 
-        // チェックする
+        const checkbox = await screen.findByLabelText('北海道');
         fireEvent.click(checkbox);
 
-        // チェック済みになる
-        expect((checkbox as HTMLInputElement).checked).toBe(true);
+        expect(mockOnChange).toHaveBeenCalledWith([1]);
+    });
+
+    // チェックボックスの状態が props.selected に応じて反映されるか
+    it('チェック解除時に onChange が呼び出される', async () => {
+        const mockOnChange = jest.fn();
+        render(<PrefectureSelector selected={[1]} onChange={mockOnChange} />);
+
+        const checkbox = await screen.findByLabelText('北海道');
+        fireEvent.click(checkbox);
+
+        expect(mockOnChange).toHaveBeenCalledWith([]); // チェック外したとき
     });
 });
